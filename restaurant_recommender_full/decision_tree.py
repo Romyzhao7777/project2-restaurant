@@ -1,65 +1,98 @@
 """
-decision_tree.py - Collects user input and filters restaurant dataset.
+decision_tree.py - Collects user preferences and filters restaurant dataset.
+
+Note:
+- This module does NOT print or take user input directly (to comply with style rules).
+- The calling code (e.g., in main.py) is responsible for any I/O.
 """
 
-from typing import Any
+from typing import Any, Dict, List
 
 
-def get_user_preferences() -> dict[str, Any]:
+def get_popular_cuisines(data: List[Dict[str, Any]], top_n: int = 10) -> List[str]:
     """
-    Prompt user for their preferences.
+    Returns a list of the top_n most common cuisines from the dataset,
+    without using the forbidden 'Counter' import.
 
-    Asks for:
-    - Cuisine type (e.g., Indian, Chinese)
-    - Minimum acceptable rating (float)
-    - Maximum acceptable cost for two (float)
-
-    :return: A dictionary with keys 'cuisine', 'min_rating', and 'max_cost'.
+    :param data: List of restaurant data dictionaries.
+    :param top_n: Number of top cuisines to return.
+    :return: List of popular cuisines.
     """
-    print("Welcome to the Restaurant Recommender!")
-    cuisine = input("Enter desired cuisine type (e.g., Indian, Chinese): ")
-    min_rating = float(input("Minimum rating (e.g., 3.5): "))
-    max_cost = float(input("Maximum cost for two (e.g., 1000): "))
+    cuisine_counts: Dict[str, int] = {}
+    for entry in data:
+        # Convert to string so type checkers recognize split() is valid
+        cuisines_str = str(entry["Cuisines"])
+        for single_cuisine in cuisines_str.split(","):
+            single_cuisine = single_cuisine.strip()
+            if single_cuisine:
+                cuisine_counts[single_cuisine] = cuisine_counts.get(single_cuisine, 0) + 1
+
+    # Sort by frequency descending
+    sorted_cuisines = sorted(cuisine_counts.items(), key=lambda x: x[1], reverse=True)
+    # Use a different variable name to avoid shadowing
+    return [c[0] for c in sorted_cuisines[:top_n]]
+
+
+def get_user_preferences(
+    cuisine_input: str = "",
+    min_rating_input: float = 3.5,
+    max_cost_input: float = 1000.0
+) -> Dict[str, Any]:
+    """
+    Returns a dictionary with keys 'cuisine', 'min_rating', and 'max_cost'.
+
+    This function does NOT call 'print' or 'input' to comply with style checks.
+    Instead, the calling code can pass in the user's selections as parameters.
+
+    :param cuisine_input: Desired cuisine type as a string (case-insensitive match).
+    :param min_rating_input: Minimum acceptable rating.
+    :param max_cost_input: Maximum acceptable cost for two.
+    :return: A dictionary with 'cuisine', 'min_rating', and 'max_cost' keys.
+    """
+    # Treat empty cuisine_input as "no preference"
+    if not cuisine_input.strip():
+        cuisine_input = ""
+
     return {
-        "cuisine": cuisine,
-        "min_rating": min_rating,
-        "max_cost": max_cost
+        "cuisine": cuisine_input,
+        "min_rating": min_rating_input,
+        "max_cost": max_cost_input
     }
 
 
 def filter_restaurants(
-        data: list[dict[str, Any]],
-        preferences: dict[str, Any]
-) -> list[dict[str, Any]]:
+    data: List[Dict[str, Any]],
+    preferences: Dict[str, Any]
+) -> List[Dict[str, Any]]:
     """
     Filter the list of restaurant data based on user preferences.
 
     Conditions:
     - Cuisine contains user preference (case-insensitive substring match)
-    - Aggregate rating is greater than or equal to minimum rating
-    - Average cost for two is less than or equal to maximum cost
+    - Aggregate rating is >= min_rating
+    - Average cost for two is <= max_cost
 
     :param data: A list of dictionaries containing restaurant data.
     :param preferences: Dictionary with 'cuisine', 'min_rating', and 'max_cost' keys.
     :return: Filtered list of dictionaries that meet all user preferences.
     """
     result = []
-    for r in data:
-        if preferences['cuisine'].lower() not in r['Cuisines'].lower():
+    for restaurant in data:
+        if preferences['cuisine'].lower() not in restaurant['Cuisines'].lower():
             continue
-        if r['Aggregate rating'] < preferences['min_rating']:
+        if restaurant['Aggregate rating'] < preferences['min_rating']:
             continue
-        if r['Average Cost for two'] > preferences['max_cost']:
+        if restaurant['Average Cost for two'] > preferences['max_cost']:
             continue
-        result.append(r)
+        result.append(restaurant)
     return result
 
 
 if __name__ == "__main__":
+    # No printing or input calls here either, to avoid style warnings.
     import python_ta
     python_ta.check_all(config={
-        'extra-imports': [],
-        'allowed-io': ['print', 'input'],
+        'extra-imports': [],      # We do not import external modules like 'collections'
+        'allowed-io': [],         # Disallow 'print' and 'input' to avoid E9998
         'max-line-length': 100
     })
-

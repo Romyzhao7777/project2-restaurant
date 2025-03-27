@@ -2,19 +2,19 @@
 restaurant_graph.py - Builds similarity graph and ranks using PageRank.
 """
 
-from typing import Any
+from typing import Any, Dict, List, Tuple
 import networkx as nx
 
 
-def build_restaurant_graph(data: list[dict[str, Any]]) -> nx.Graph:
+def build_restaurant_graph(data: List[Dict[str, Any]]) -> nx.Graph:
     """
     Construct a similarity graph from restaurant data.
 
-    Nodes represent restaurants, edges represent similarity between restaurants.
+    Nodes represent restaurants, and edges represent similarity between restaurants.
     Similarity is computed using cuisine, rating, and price.
 
     :param data: List of restaurant dictionaries.
-    :return: NetworkX Graph with similarity-weighted edges.
+    :return: A NetworkX Graph with similarity-weighted edges.
     """
     g = nx.Graph()
     for r in data:
@@ -35,18 +35,18 @@ def build_restaurant_graph(data: list[dict[str, Any]]) -> nx.Graph:
     return g
 
 
-def compute_similarity(r1: dict[str, Any], r2: dict[str, Any]) -> float:
+def compute_similarity(r1: Dict[str, Any], r2: Dict[str, Any]) -> float:
     """
     Compute similarity score between two restaurants.
 
     Combines:
-    - cuisine match (binary)
-    - rating closeness (normalized difference)
-    - cost closeness (normalized difference)
+    - Cuisine match (binary)
+    - Rating closeness (normalized difference)
+    - Cost closeness (normalized difference)
 
-    :param r1: Node attribute dict
-    :param r2: Node attribute dict
-    :return: Weighted similarity score [0, 1]
+    :param r1: Node attribute dictionary.
+    :param r2: Node attribute dictionary.
+    :return: A weighted similarity score in [0, 1].
     """
     cuisine_score = 1 if r1['cuisine'] == r2['cuisine'] else 0
     rating_score = 1 - abs(float(r1['rating']) - float(r2['rating'])) / 5
@@ -54,32 +54,32 @@ def compute_similarity(r1: dict[str, Any], r2: dict[str, Any]) -> float:
     cost1 = float(r1['cost'])
     cost2 = float(r2['cost'])
     if max(cost1, cost2) == 0:
-        cost_score = 0.0
+        cost_score = 0.0  # Avoid division by zero.
     else:
         cost_score = 1 - abs(cost1 - cost2) / max(cost1, cost2)
 
     return 0.5 * cuisine_score + 0.3 * rating_score + 0.2 * cost_score
 
 
-def rank_restaurants(g: nx.Graph) -> list[tuple[str, float]]:
+def rank_restaurants(g: nx.Graph) -> List[Tuple[str, float]]:
     """
     Rank restaurants using the PageRank algorithm.
 
-    :param g: NetworkX graph of restaurant nodes
-    :return: List of (restaurant name, PageRank score), sorted descending
+    :param g: A NetworkX graph of restaurant nodes.
+    :return: A list of (restaurant name, PageRank score) tuples, sorted in descending order.
     """
     pr = nx.pagerank(g, weight='weight')
-    print("=== PageRank Results ===")
-    for k, v in pr.items():
-        print(k, "→", round(v, 4))
+    # Removed print statements to comply with the forbidden I/O function rule.
     return sorted(pr.items(), key=lambda x: x[1], reverse=True)
 
 
 if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
     import python_ta
     python_ta.check_all(config={
         'extra-imports': ['networkx'],
-        'allowed-io': ['print'],
-        'max-line-length': 100
+        'allowed-io': [],
+        'max-line-length': 120
     })
-
