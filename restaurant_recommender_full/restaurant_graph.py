@@ -19,10 +19,10 @@ def build_restaurant_graph(data: List[Dict[str, Any]]) -> nx.Graph:
     g = nx.Graph()
     for r in data:
         g.add_node(
-            r['Restaurant Name'],
-            rating=r['Aggregate rating'],
-            cost=r['Average Cost for two'],
-            cuisine=r['Cuisines']
+            r['name'],
+            rating=r['rate'],
+            cost=r['approx_cost(for two people)'],
+            cuisine=r['cuisines']
         )
     names = list(g.nodes())
     for i in range(len(names)):
@@ -48,7 +48,9 @@ def compute_similarity(r1: Dict[str, Any], r2: Dict[str, Any]) -> float:
     :param r2: Node attribute dictionary.
     :return: A weighted similarity score in [0, 1].
     """
-    cuisine_score = 1 if r1['cuisine'] == r2['cuisine'] else 0
+    set1 = set(map(str.strip, r1['cuisine'].split(',')))
+    set2 = set(map(str.strip, r2['cuisine'].split(',')))
+    cuisine_score = 1 if set1 & set2 else 0
     rating_score = 1 - abs(float(r1['rating']) - float(r2['rating'])) / 5
 
     cost1 = float(r1['cost'])
@@ -83,3 +85,4 @@ def rank_restaurants(g: nx.Graph) -> List[Tuple[str, float]]:
 #         'allowed-io': [],
 #         'max-line-length': 120
 #     })
+
