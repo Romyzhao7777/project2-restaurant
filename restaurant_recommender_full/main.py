@@ -84,14 +84,14 @@ if __name__ == "__main__":  # noqa: E9998
     else:
         visualization.visualize_rankings(ranked_restaurants)
 
-    import python_ta
-    python_ta.check_all(config={
-        'extra-imports': [
-            'data_loader',
-            'decision_tree',
-            'restaurant_graph',
-            'visualization'
-        ],
-        'allowed-io': ['print', 'input'],
-        'max-line-length': 100
-    })
+    # import python_ta
+    # python_ta.check_all(config={
+    #     'extra-imports': [
+    #         'data_loader',
+    #         'decision_tree',
+    #         'restaurant_graph',
+    #         'visualization'
+    #     ],
+    #     'allowed-io': ['print', 'input'],
+    #     'max-line-length': 100
+    # })

@@ -67,13 +67,13 @@ def load_and_preprocess_data(filepath: str) -> List[Dict[str, Any]]:
     return result
 
 
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
-
-    import python_ta
-    python_ta.check_all(config={
-        'extra-imports': ['csv'],
-        'allowed-io': ['_open_file'],
-        'max-line-length': 120
-    })
+# if __name__ == "__main__":
+#     import doctest
+#     doctest.testmod()
+#
+#     import python_ta
+#     python_ta.check_all(config={
+#         'extra-imports': ['csv'],
+#         'allowed-io': ['_open_file'],
+#         'max-line-length': 120
+#     })

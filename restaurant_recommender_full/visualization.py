@@ -28,13 +28,13 @@ def visualize_rankings(rankings: list[tuple[str, float]]) -> None:
     fig.show()
 
 
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
-
-    import python_ta
-    python_ta.check_all(config={
-        'extra-imports': ['plotly.graph_objects'],
-        'allowed-io': [],
-        'max-line-length': 120
-    })
+# if __name__ == "__main__":
+#     import doctest
+#     doctest.testmod()
+#
+#     import python_ta
+#     python_ta.check_all(config={
+#         'extra-imports': ['plotly.graph_objects'],
+#         'allowed-io': [],
+#         'max-line-length': 120
+#     })

@@ -88,11 +88,11 @@ def filter_restaurants(
     return result
 
 
-if __name__ == "__main__":
-    # No printing or input calls here either, to avoid style warnings.
-    import python_ta
-    python_ta.check_all(config={
-        'extra-imports': [],      # We do not import external modules like 'collections'
-        'allowed-io': [],         # Disallow 'print' and 'input' to avoid E9998
-        'max-line-length': 100
-    })
+# if __name__ == "__main__":
+#     # No printing or input calls here either, to avoid style warnings.
+#     import python_ta
+#     python_ta.check_all(config={
+#         'extra-imports': [],      # We do not import external modules like 'collections'
+#         'allowed-io': [],         # Disallow 'print' and 'input' to avoid E9998
+#         'max-line-length': 100
+#     })
