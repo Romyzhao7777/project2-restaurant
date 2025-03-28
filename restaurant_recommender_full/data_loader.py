@@ -60,7 +60,7 @@ def load_and_preprocess_data(filepath: str) -> List[Dict[str, Any]]:
                     'name': row[col_idx['name']],
                     'cuisines': row[col_idx['cuisines']],
                     'rate': float(row[col_idx['rate']]),
-                    'approx_cost(for two people)': float(row[col_idx['approx_cost(for two people)']]),
+                    'approx_cost(for two people)': float(cost_str),
                     'votes': int(row[col_idx['votes']]),
                     'location': row[col_idx['location']],
                     'url': row[col_idx['url']]
@@ -73,12 +73,13 @@ def load_and_preprocess_data(filepath: str) -> List[Dict[str, Any]]:
 
 # if __name__ == "__main__":
 #     import doctest
+#
 #     doctest.testmod()
 #
 #     import python_ta
+#
 #     python_ta.check_all(config={
 #         'extra-imports': ['csv'],
 #         'allowed-io': ['_open_file'],
 #         'max-line-length': 120
 #     })
-

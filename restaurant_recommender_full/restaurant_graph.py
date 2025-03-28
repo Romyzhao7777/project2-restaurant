@@ -77,12 +77,13 @@ def rank_restaurants(g: nx.Graph) -> List[Tuple[str, float]]:
 
 # if __name__ == "__main__":
 #     import doctest
+#
 #     doctest.testmod()
 #
 #     import python_ta
+#
 #     python_ta.check_all(config={
 #         'extra-imports': ['networkx'],
 #         'allowed-io': [],
 #         'max-line-length': 120
 #     })
-

@@ -96,4 +96,3 @@ def filter_restaurants(
 #         'allowed-io': [],         # Disallow 'print' and 'input' to avoid E9998
 #         'max-line-length': 100
 #     })
-

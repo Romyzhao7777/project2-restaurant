@@ -9,7 +9,6 @@ import data_loader
 import decision_tree
 import restaurant_graph
 import visualization
-import matplotlib.pyplot as plt
 
 
 def get_popular_cuisines(restaurants: List[Dict[str, Any]], top_n: int = 10) -> List[str]:
@@ -48,7 +47,7 @@ def compute_recommendations(
     graph = restaurant_graph.build_restaurant_graph(filtered)
     ranked = restaurant_graph.rank_restaurants(graph)
     visualization.visualize_rankings(ranked)
-    visualization.visualize_location_graph(filtered, plt)
+    visualization.visualize_location_graph_top10(filtered, ranked)
     return filtered, ranked
 
 
@@ -86,16 +85,3 @@ if __name__ == "__main__":  # noqa: E9998
         print("❌ No restaurants matched your preferences. Try relaxing your filters.")
     else:
         visualization.visualize_rankings(ranked_restaurants)
-
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'extra-imports': [
-    #         'data_loader',
-    #         'decision_tree',
-    #         'restaurant_graph',
-    #         'visualization'
-    #     ],
-    #     'allowed-io': ['print', 'input'],
-    #     'max-line-length': 100
-    # })
-
