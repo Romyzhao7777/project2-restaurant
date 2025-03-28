@@ -9,12 +9,13 @@ import data_loader
 import decision_tree
 import restaurant_graph
 import visualization
+import matplotlib.pyplot as plt
 
 
 def get_popular_cuisines(restaurants: List[Dict[str, Any]], top_n: int = 10) -> List[str]:
     """
     Compute the most popular cuisines from the dataset without using Counter.
-    Assumes the 'Cuisines' field may contain comma-separated values.
+    Assumes the 'cuisines' field may contain comma-separated values.
 
     :param restaurants: List of restaurant data dictionaries.
     :param top_n: Number of top cuisines to return.
@@ -22,7 +23,7 @@ def get_popular_cuisines(restaurants: List[Dict[str, Any]], top_n: int = 10) -> 
     """
     cuisine_counts: Dict[str, int] = {}
     for entry in restaurants:
-        cuisines_str = str(entry["Cuisines"])  # Cast to str to safely call split()
+        cuisines_str = str(entry["cuisines"])
         for single_cuisine in cuisines_str.split(","):
             single_cuisine = single_cuisine.strip()
             if single_cuisine:
@@ -46,12 +47,14 @@ def compute_recommendations(
         return filtered, []
     graph = restaurant_graph.build_restaurant_graph(filtered)
     ranked = restaurant_graph.rank_restaurants(graph)
+    visualization.visualize_rankings(ranked)
+    visualization.visualize_location_graph(filtered, plt)
     return filtered, ranked
 
 
 if __name__ == "__main__":  # noqa: E9998
     # All I/O is performed only in the main entry point.
-    all_data = data_loader.load_and_preprocess_data("zomato_cleaned (1).csv")
+    all_data = data_loader.load_and_preprocess_data("zomato_cleaned.csv")
     popular_cuisines = get_popular_cuisines(all_data, top_n=10)
 
     print("Popular cuisines: ")
@@ -95,3 +98,4 @@ if __name__ == "__main__":  # noqa: E9998
     #     'allowed-io': ['print', 'input'],
     #     'max-line-length': 100
     # })
+
