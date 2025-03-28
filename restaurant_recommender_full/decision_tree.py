@@ -21,7 +21,7 @@ def get_popular_cuisines(data: List[Dict[str, Any]], top_n: int = 10) -> List[st
     cuisine_counts: Dict[str, int] = {}
     for entry in data:
         # Convert to string so type checkers recognize split() is valid
-        cuisines_str = str(entry["Cuisines"])
+        cuisines_str = str(entry["cuisines"])
         for single_cuisine in cuisines_str.split(","):
             single_cuisine = single_cuisine.strip()
             if single_cuisine:
@@ -78,11 +78,11 @@ def filter_restaurants(
     """
     result = []
     for restaurant in data:
-        if preferences['cuisine'].lower() not in restaurant['Cuisines'].lower():
+        if preferences['cuisine'].lower() not in restaurant['cuisines'].lower():
             continue
-        if restaurant['Aggregate rating'] < preferences['min_rating']:
+        if restaurant['rate'] < preferences['min_rating']:
             continue
-        if restaurant['Average Cost for two'] > preferences['max_cost']:
+        if restaurant['approx_cost(for two people)'] > preferences['max_cost']:
             continue
         result.append(restaurant)
     return result
@@ -96,3 +96,4 @@ def filter_restaurants(
 #         'allowed-io': [],         # Disallow 'print' and 'input' to avoid E9998
 #         'max-line-length': 100
 #     })
+
