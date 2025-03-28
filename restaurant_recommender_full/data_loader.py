@@ -45,21 +45,25 @@ def load_and_preprocess_data(filepath: str) -> List[Dict[str, Any]]:
         reader = csv.reader(f)
         headers = next(reader)
         col_idx = {
-            'Restaurant Name': headers.index('name'),
-            'Cuisines': headers.index('cuisines'),
-            'Average Cost for two': headers.index('approx_cost(for two people)'),
-            'Aggregate rating': headers.index('rate'),
-            'Votes': headers.index('votes')
+            'name': headers.index('name'),
+            'cuisines': headers.index('cuisines'),
+            'rate': headers.index('rate'),
+            'approx_cost(for two people)': headers.index('approx_cost(for two people)'),
+            'votes': headers.index('votes'),
+            'location': headers.index('location'),
+            'url': headers.index('url')
         }
         for row in reader:
             try:
-                cost_str = row[col_idx['Average Cost for two']].replace(',', '').strip()
+                cost_str = row[col_idx['approx_cost(for two people)']].replace(',', '').strip()
                 entry = {
-                    'Restaurant Name': row[col_idx['Restaurant Name']],
-                    'Cuisines': row[col_idx['Cuisines']],
-                    'Average Cost for two': float(cost_str),
-                    'Aggregate rating': float(row[col_idx['Aggregate rating']]),
-                    'Votes': int(row[col_idx['Votes']])
+                    'name': row[col_idx['name']],
+                    'cuisines': row[col_idx['cuisines']],
+                    'rate': float(row[col_idx['rate']]),
+                    'approx_cost(for two people)': float(row[col_idx['approx_cost(for two people)']]),
+                    'votes': int(row[col_idx['votes']]),
+                    'location': row[col_idx['location']],
+                    'url': row[col_idx['url']]
                 }
                 result.append(entry)
             except (ValueError, IndexError, KeyError):
@@ -77,3 +81,4 @@ def load_and_preprocess_data(filepath: str) -> List[Dict[str, Any]]:
 #         'allowed-io': ['_open_file'],
 #         'max-line-length': 120
 #     })
+
